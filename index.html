@@ -16,11 +16,15 @@
 		</legend>
 		<div id="tasks"></div>
 	</fieldset>
+	<div>
+		Filter:<input type="text" oninput=filter(this.value)>
+	</div>
 	<script>
 		var task_list = document.querySelector("#tasks");
 		var tasks = Lawnchair({
 			name: "tasks"
 		}, list);
+		var current_filter = "";
 
 		function removeTask(e) {
 			var key = e.id;
@@ -37,13 +41,20 @@
 
 		function list() {
 			tasks.all(function(tasks) {
+				console.log(filter);
 				var str = "";
 				tasks.forEach(function(task) {
 					console.log(task);
+					if(current_filter && (task.text.toLowerCase().indexOf(current_filter.toLowerCase())===-1))return;
 					str += '<div id="' + task.key + '" onclick="removeTask(this)">' + task.text + "</div>\n";
 				})
 				task_list.innerHTML = str;
 			})
+		}
+
+		function filter(value){
+			current_filter = value;
+			list();
 		}
 
 		function ranstr(n) {
@@ -54,6 +65,8 @@
 				res += chars[Math.floor(Math.random() * chars.length)];
 			return res;
 		}
+
+		document.onload = list;
 	</script>
 </body>
 
