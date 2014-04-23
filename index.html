@@ -8,7 +8,7 @@
 </head>
 
 <body>
-	<h>Hello World</h>
+	<h1>Tasks</h1>
 	<fieldset>
 		<legend>
 			<input type="text">
@@ -43,9 +43,10 @@
 			tasks.all(function(tasks) {
 				console.log(filter);
 				var str = "";
-				tasks.forEach(function(task) {
+				tasks.filter(function(task){
+					return !(current_filter && (task.text.toLowerCase().indexOf(current_filter.toLowerCase())===-1));
+				}).forEach(function(task) {
 					console.log(task);
-					if(current_filter && (task.text.toLowerCase().indexOf(current_filter.toLowerCase())===-1))return;
 					str += '<div id="' + task.key + '" onclick="removeTask(this)">' + task.text + "</div>\n";
 				})
 				task_list.innerHTML = str;
