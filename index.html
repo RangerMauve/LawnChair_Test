@@ -2,15 +2,59 @@
 <html>
 
 <head>
-	<script>
-		function tools() {
-			require('nw.gui').Window.get().showDevTools();
-		}
-	</script>
+	<script src="scripts/lawnchair-0.6.1.js"></script>
+	<script src="scripts/lawnchair-adapter-indexed-db-0.6.1.js"></script>
+	<script src="scripts/lawnchair-adapter-webkit-sqlite-0.6.1.js"></script>
 </head>
 
-<body style="-webkit-app-region: drag">
+<body>
 	<h>Hello World</h>
+	<fieldset>
+		<legend>
+			<input type="text">
+			<button onclick="add(this.previousSibling.previousSibling.value)">Add</button>
+		</legend>
+		<div id="tasks"></div>
+	</fieldset>
+	<script>
+		var task_list = document.querySelector("#tasks");
+		var tasks = Lawnchair({
+			name: "tasks"
+		}, list);
+
+		function removeTask(e) {
+			var key = e.id;
+			console.log(key,e);
+			tasks.remove(key, list);
+		}
+
+		function add(txt) {
+			if(txt) tasks.save({
+				key: ranstr(),
+				text: txt
+			}, list);
+		}
+
+		function list() {
+			tasks.all(function(tasks) {
+				var str = "";
+				tasks.forEach(function(task) {
+					console.log(task);
+					str += '<div id="' + task.key + '" onclick="removeTask(this)">' + task.text + "</div>\n";
+				})
+				task_list.innerHTML = str;
+			})
+		}
+
+		function ranstr(n) {
+			if (!n) n = 6;
+			var res = "";
+			var chars = "0123456789ABCDEF";
+			while (n--)
+				res += chars[Math.floor(Math.random() * chars.length)];
+			return res;
+		}
+	</script>
 </body>
 
 </html>
