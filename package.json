@@ -1,0 +1,10 @@
+{
+	"main":"index.html",
+	"name":"Lawnchair Test",
+	"description":"Testing out lawnchair",
+	"version":"0.1",
+	"window":{
+		"toolbar":false,
+		"frame":false
+	}
+}
